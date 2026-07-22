@@ -32,8 +32,7 @@
     border-bottom:1px solid transparent}
   header.scrolled{background:rgba(10,10,10,.82);backdrop-filter:blur(10px);border-bottom-color:var(--line)}
   .brand{display:flex;align-items:center;gap:12px;cursor:pointer}
-  .brand img{height:22px}
-  .brand .bt{font-size:15px;font-weight:800;letter-spacing:.14em}
+  .brand img.navlogo{height:19px;width:auto;display:block}
   nav{display:flex;gap:26px}
   nav a{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
     padding:6px 0;position:relative;transition:color .18s;white-space:nowrap}
@@ -83,6 +82,7 @@
   .intro .hs-lbl{font-size:1.2cqw}
   .intro .hs-title{font-size:12cqw}
   .intro .hs-title2{font-size:11.2cqw}
+  .hs-wordmark{width:44cqw;height:auto;display:block;margin:.5cqw 0}
 
   /* scroll cue on hero */
   .cue{position:absolute;left:50%;bottom:5%;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;
@@ -144,8 +144,7 @@
 
 <header id="hdr">
   <div class="brand" id="brand">
-    <img src="assets/pinnacle-caret.png" alt="Pinnacle">
-    <span class="bt">LAPIS</span>
+    <img class="navlogo" src="assets/lapis-wordmark.png" alt="LAPIS">
   </div>
   <nav id="nav"></nav>
 </header>
@@ -242,7 +241,7 @@ intro.innerHTML=`
       <div class="intro-layer" id="layer1">
         <div class="hs-block">
           <div class="hs-eyebrow">AGENCY CREATIVE CAPABILITIES</div>
-          <div class="hs-title">LAPIS</div>
+          <img class="hs-wordmark" src="assets/lapis-wordmark.png" alt="LAPIS">
           <div class="hs-rule"></div>
         </div>
         <div class="hs-date">07 · 21 · 26</div>
