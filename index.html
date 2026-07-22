@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LAPIS — Agency Creative Capabilities</title>
+<meta name="description" content="LAPIS Automotive Group — agency creative capabilities by Pinnacle Advertising & Marketing Group.">
+<link rel="icon" href="assets/pinnacle-caret.png">
+<style>
+  :root{
+    --accent:#D72E34;
+    --accent-bright:#f0353c;
+    --bg:#0a0a0a;
+    --line:#242424;
+    --txt:#f5f5f5;
+    --muted:#8f8f8f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-snap-type:y proximity;scroll-padding-top:60px}
+  body{background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+
+  /* scroll progress */
+  #progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:60;transition:width .1s linear}
+
+  /* header */
+  header{position:fixed;top:0;left:0;right:0;height:60px;z-index:50;display:flex;align-items:center;
+    justify-content:space-between;padding:0 26px;transition:background .25s, border-color .25s;
+    border-bottom:1px solid transparent}
+  header.scrolled{background:rgba(10,10,10,.82);backdrop-filter:blur(10px);border-bottom-color:var(--line)}
+  .brand{display:flex;align-items:center;gap:12px;cursor:pointer}
+  .brand img{height:22px}
+  .brand .bt{font-size:15px;font-weight:800;letter-spacing:.14em}
+  nav{display:flex;gap:26px}
+  nav a{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+    padding:6px 0;position:relative;transition:color .18s;white-space:nowrap}
+  nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--accent);
+    transform:scaleX(0);transform-origin:left;transition:transform .22s}
+  nav a:hover{color:#fff}
+  nav a.active{color:#fff}
+  nav a.active::after{transform:scaleX(1)}
+
+  /* sections */
+  main{width:100%}
+  .sec{position:relative;width:100%;scroll-snap-align:start;
+    opacity:0;transform:translateY(26px);transition:opacity .8s ease, transform .8s ease}
+  .sec.in{opacity:1;transform:none}
+  .sec > img.slideimg{width:100%;height:auto;display:block}
+
+  /* HTML-native canvas slides */
+  .hscanvas{container-type:size;overflow:hidden;background:#0b0b0b;
+    font-family:"Avenir Next","Avenir",-apple-system,BlinkMacSystemFont,sans-serif;color:#fff}
+  .hs-full{position:relative;width:100%;aspect-ratio:16/9;display:block}
+  .hs-bg{position:absolute;inset:0;background:radial-gradient(130% 100% at 26% 42%, #202022 0%, #141416 40%, #0a0a0b 70%, #060607 100%)}
+  .hs-vig{position:absolute;inset:0;box-shadow:inset 0 0 16.7cqw 4.2cqw rgba(0,0,0,.75)}
+  .hs-grain{position:absolute;inset:0;opacity:.05;mix-blend-mode:screen;
+    background-image:radial-gradient(rgba(255,255,255,.9) 1px,transparent 1px);background-size:.21cqw .21cqw}
+  .hs-ghost{position:absolute;right:-13.5cqw;top:50%;transform:translateY(-52%);width:78cqw;opacity:.045;
+    filter:brightness(0) invert(16%) sepia(90%) saturate(3000%) hue-rotate(345deg)}
+  .hs-logo{position:absolute;top:4.3cqw;left:6.9cqw;height:2.7cqw}
+  .hs-block{position:absolute;left:6.9cqw;top:50%;transform:translateY(-52%)}
+  .hs-eyebrow{font-size:1.77cqw;font-weight:600;letter-spacing:.34em;color:#d72e34;margin-bottom:1.35cqw}
+  .hs-eyebrow2{display:flex;align-items:center;gap:1.15cqw;margin-bottom:1.55cqw}
+  .hs-idx{font-size:1.77cqw;font-weight:800;color:#d72e34}
+  .hs-lbl{font-size:1.56cqw;font-weight:600;letter-spacing:.34em;color:#9a9a9a}
+  .hs-title{font-size:15.6cqw;font-weight:800;letter-spacing:-.02em;line-height:.86}
+  .hs-title2{font-size:14.58cqw;letter-spacing:-.015em;line-height:.9}
+  .hs-rule{width:8.85cqw;height:.31cqw;background:#d72e34;margin:2.3cqw 0 0}
+  .hs-rule2{width:11.98cqw}
+  .hs-foot{position:absolute;left:6.9cqw;bottom:3.85cqw;font-size:1.25cqw;font-weight:600;letter-spacing:.22em;color:#7b7b7b}
+  .hs-date{position:absolute;right:6.9cqw;bottom:3.85cqw;font-size:1.25cqw;font-weight:600;letter-spacing:.22em;color:#7b7b7b}
+
+  /* parallax intro — slides 1 & 2 share a background and cross-blend on scroll */
+  .intro{position:relative;height:220vh;scroll-snap-align:start}
+  .intro-sticky{position:sticky;top:0;height:100vh;overflow:hidden}
+  .intro-stage{position:absolute;inset:0}
+  .intro-layer{position:absolute;inset:0;will-change:opacity,transform}
+  .intro .hs-foot{font-size:.95cqw}
+  .intro .hs-eyebrow,.intro .hs-idx{font-size:1.35cqw}
+  .intro .hs-lbl{font-size:1.2cqw}
+  .intro .hs-title{font-size:12cqw}
+  .intro .hs-title2{font-size:11.2cqw}
+
+  /* scroll cue on hero */
+  .cue{position:absolute;left:50%;bottom:5%;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;
+    align-items:center;gap:8px;color:rgba(255,255,255,.6);font-size:11px;letter-spacing:.28em;font-weight:700;
+    animation:bob 2s ease-in-out infinite}
+  .cue svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2}
+  @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,7px)}}
+
+  /* video sections */
+  .vsec{position:relative;width:100%;aspect-ratio:16/9;background:#000;overflow:hidden}
+  .vsec .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .vsec video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+  .playbtn{position:absolute;inset:0;margin:auto;width:9cqw;min-width:74px;max-width:120px;aspect-ratio:1;
+    border-radius:50%;background:transparent;border:none;padding:0;cursor:pointer;z-index:5;color:var(--accent);
+    display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 6px 22px rgba(0,0,0,.45));
+    transition:transform .22s cubic-bezier(.2,.8,.2,1), color .2s}
+  .vsec{container-type:inline-size}
+  .playbtn:hover{transform:scale(1.08);color:var(--accent-bright)}
+  .playbtn:active{transform:scale(1.02)}
+  .playbtn svg{width:100%;height:100%;display:block}
+
+  /* label chip on each section (bottom-left) */
+  .seclabel{position:absolute;left:0;bottom:0;z-index:6;display:flex;align-items:center;gap:10px;
+    padding:12px 18px;font-size:12px;font-weight:700;letter-spacing:.06em;
+    background:linear-gradient(90deg,rgba(0,0,0,.55),transparent);color:#fff;pointer-events:none;max-width:70%}
+  .seclabel .n{color:var(--accent);font-weight:800}
+  .seclabel.link{pointer-events:auto;cursor:pointer;background:linear-gradient(90deg,rgba(0,0,0,.7),transparent)}
+  .seclabel .go{color:var(--accent);font-weight:800}
+
+  /* footer */
+  footer{position:relative;width:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:90px 26px;text-align:center;
+    background:radial-gradient(120% 90% at 50% 42%, #1b1b1f 0%, #0b0b0c 58%, #060607 100%);
+    scroll-snap-align:start;border-top:1px solid var(--line)}
+  footer .fcaret{height:40px;margin:0 auto 26px;opacity:.9}
+  footer h2{font-size:clamp(30px,5vw,58px);font-weight:800;letter-spacing:-.01em;line-height:1.05;margin-bottom:16px;
+    font-family:"Avenir Next","Avenir",-apple-system,sans-serif}
+  footer p{color:var(--muted);font-size:16px;max-width:520px;margin:0 auto 34px;line-height:1.55}
+  .cta{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#fff;font-weight:700;
+    letter-spacing:.04em;font-size:15px;padding:15px 30px;border-radius:40px;transition:.18s}
+  .cta:hover{background:var(--accent-bright);transform:translateY(-2px)}
+  .fmeta{position:absolute;bottom:40px;left:0;right:0;color:#5f5f5f;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+  .fmeta a{color:#8f8f8f}.fmeta a:hover{color:#fff}
+
+  @media (max-width:760px){
+    header{padding:0 16px}
+    .brand .bt{display:none}
+    nav{gap:16px}
+    nav a{font-size:10px;letter-spacing:.1em}
+  }
+  @media (max-width:460px){
+    nav a:nth-child(2){display:none} /* hide one link on very small screens */
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<header id="hdr">
+  <div class="brand" id="brand">
+    <img src="assets/pinnacle-caret.png" alt="Pinnacle">
+    <span class="bt">LAPIS</span>
+  </div>
+  <nav id="nav"></nav>
+</header>
+
+<main id="main"></main>
+
+<footer id="footer">
+  <img class="fcaret" src="assets/pinnacle-caret.png" alt="">
+  <h2>Let's build the next chapter<br>of LAPIS together.</h2>
+  <p>Full-service creative, media, and production — one integrated team, built for the speed of retail.</p>
+  <a class="cta" href="https://pinnacleadvertising.com" target="_blank" rel="noopener">Start a conversation →</a>
+  <div class="fmeta">Pinnacle Advertising &amp; Marketing Group · <a href="https://pinnacleadvertising.com" target="_blank" rel="noopener">pinnacleadvertising.com</a></div>
+</footer>
+
+<script>
+const SLIDES = [
+  {t:"LAPIS — Agency Creative Capabilities", html:`
+    <div class="hs-bg"></div>
+    <img class="hs-ghost" src="assets/pinnacle-caret.png" alt="">
+    <div class="hs-vig"></div>
+    <div class="hs-grain"></div>
+    <img class="hs-logo" src="assets/pinnacle-caret.png" alt="">
+    <div class="hs-block">
+      <div class="hs-eyebrow">AGENCY CREATIVE CAPABILITIES</div>
+      <div class="hs-title">LAPIS</div>
+      <div class="hs-rule"></div>
+    </div>
+    <div class="hs-foot">PINNACLE ADVERTISING &amp; MARKETING GROUP</div>
+    <div class="hs-date">07 · 21 · 26</div>`, hero:true},
+  {t:"Branding", html:`
+    <div class="hs-bg"></div>
+    <img class="hs-ghost" src="assets/pinnacle-caret.png" alt="">
+    <div class="hs-vig"></div>
+    <div class="hs-grain"></div>
+    <img class="hs-logo" src="assets/pinnacle-caret.png" alt="">
+    <div class="hs-block">
+      <div class="hs-eyebrow2"><span class="hs-idx">01</span><span class="hs-lbl">CREATIVE CAPABILITIES</span></div>
+      <div class="hs-title hs-title2">BRANDING</div>
+      <div class="hs-rule hs-rule2"></div>
+    </div>
+    <div class="hs-foot">PINNACLE ADVERTISING &amp; MARKETING GROUP</div>`},
+  {t:"Dealership Branding"},
+  {t:"Lakeland — Own It, Take It, In Style", videos:[{src:"video-04.mp4"}]},
+  {t:"Cadillac Lakeland — Evergreen Campaign", videos:[{src:"video-05.mp4"}]},
+  {t:"Buick Lakeland — In Style Campaign", videos:[{src:"video-06.mp4"}]},
+  {t:"Motor Works — Brand Identity", videos:[{src:"video-07.mp4"}]},
+  {t:"Motor Werks", videos:[{src:"video-08.mp4"}]},
+  {t:"Brooksville Buick GMC — Roam Free", videos:[{src:"video-09a.mp4"}]},
+  {t:"Client Testimonial — Brooksville"},
+  {t:"Brooksville Buick • GMC — There's Work to Be Done", videos:[{src:"video-11.mp4"}]},
+  {t:"Toyota of Coconut Creek — No Genie? No Problem", videos:[{src:"video-12.mp4"}]},
+  {t:"Toyota of Coconut Creek — Spot", videos:[{src:"video-13.mp4"}]},
+  {t:"Audi South Atlanta", videos:[{src:"video-14.mp4"}]},
+  {t:"Braman Miami — Details", videos:[{src:"video-15.mp4"}]},
+  {t:"Volvo of Orange Park — Chiefs", videos:[{src:"video-16.mp4"}]},
+  {t:"Retail Branding"},
+  {t:"MetroVac — Heavy U.S. Steel", videos:[{src:"video-18.mp4"}]},
+  {t:"Hassell — Blue Collar Wagyu", videos:[{src:"video-19.mp4"}]},
+  {t:"WeatherTech — CupFone"},
+  {t:"WeatherTech — Whatever Comes Your Way", videos:[{src:"video-21.mp4"}]},
+  {t:"Pitch Spot Gallery", link:"https://pinnacleadvertising.com/apps/galleries/061824/", autoplay:true, videos:[{src:"video-22.mp4"}]},
+];
+const NAV = [
+  {label:"Automotive", i:2},
+  {label:"Retail", i:16},
+  {label:"Gallery", i:21},
+];
+const pad = n => String(n+1).padStart(2,"0");
+const slideSrc = i => `assets/slides/slide-${pad(i)}.png`;
+const vidSrc = f => `assets/videos/${f}`;
+const PLAY_SVG = '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45.5" fill="rgba(0,0,0,.32)"/><circle cx="50" cy="50" r="46.5" fill="none" stroke="#fff" stroke-width="2.5"/><path fill="currentColor" d="M40 33 L70 50 L40 67 Z"/></svg>';
+
+// build nav
+const nav = document.getElementById("nav");
+NAV.forEach(n=>{
+  const a=document.createElement("a"); a.href="#"; a.textContent=n.label; a.dataset.i=n.i;
+  a.addEventListener("click",e=>{e.preventDefault(); scrollToIndex(n.i);});
+  nav.appendChild(a);
+});
+
+const main = document.getElementById("main");
+
+/* ---- parallax intro: slides 1 & 2 share a background and cross-blend on scroll ---- */
+const intro=document.createElement("section");
+intro.className="intro"; intro.id="sec-1";
+intro.innerHTML=`
+  <div class="intro-sticky">
+    <div class="intro-stage hscanvas">
+      <div class="hs-bg"></div>
+      <img class="hs-ghost intro-ghost" src="assets/pinnacle-caret.png" alt="">
+      <div class="hs-vig"></div>
+      <div class="hs-grain"></div>
+      <img class="hs-logo" src="assets/pinnacle-caret.png" alt="">
+      <div class="intro-layer" id="layer1">
+        <div class="hs-block">
+          <div class="hs-eyebrow">AGENCY CREATIVE CAPABILITIES</div>
+          <div class="hs-title">LAPIS</div>
+          <div class="hs-rule"></div>
+        </div>
+        <div class="hs-date">07 · 21 · 26</div>
+        <div class="cue">SCROLL<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+      <div class="intro-layer" id="layer2" style="opacity:0">
+        <div class="hs-block">
+          <div class="hs-eyebrow2"><span class="hs-lbl">CREATIVE CAPABILITIES</span></div>
+          <div class="hs-title hs-title2">BRANDING</div>
+          <div class="hs-rule hs-rule2"></div>
+        </div>
+      </div>
+      <div class="hs-foot">PINNACLE ADVERTISING</div>
+    </div>
+  </div>`;
+main.appendChild(intro);
+const introEl=intro, layer1=intro.querySelector("#layer1"), layer2=intro.querySelector("#layer2"), ghost=intro.querySelector(".intro-ghost");
+
+/* ---- content sections (slides 3+) ---- */
+const contentSecs=[];
+SLIDES.forEach((s,i)=>{
+  if(i<2) return;
+  const sec=document.createElement("section");
+  sec.className="sec"; sec.id="sec-"+(i+1);
+  const vids=s.videos||[];
+  if(vids.length && s.autoplay){
+    const box=document.createElement("div"); box.className="vsec";
+    const v=document.createElement("video");
+    v.src=vidSrc(vids[0].src); v.muted=true; v.loop=true; v.playsInline=true; v.preload="metadata";
+    v.setAttribute("poster",slideSrc(i)); v.style.pointerEvents="none";
+    box.appendChild(v);
+    sec.appendChild(box);
+    new IntersectionObserver((ents)=>ents.forEach(en=>{ if(en.isIntersecting) v.play().catch(()=>{}); else v.pause(); }),{threshold:.25}).observe(box);
+  } else if(vids.length){
+    const box=document.createElement("div"); box.className="vsec";
+    const poster=document.createElement("img"); poster.className="poster"; poster.loading="lazy"; poster.src=slideSrc(i); poster.alt=s.t;
+    box.appendChild(poster);
+    const pb=document.createElement("button"); pb.className="playbtn"; pb.setAttribute("aria-label","Play "+s.t); pb.innerHTML=PLAY_SVG;
+    pb.addEventListener("click",e=>{e.stopPropagation();playVideo(box,vids[0].src,poster);});
+    box.appendChild(pb);
+    sec.appendChild(box);
+  } else {
+    const img=document.createElement("img"); img.className="slideimg"; img.loading="lazy"; img.src=slideSrc(i); img.alt=s.t;
+    sec.appendChild(img);
+  }
+  const lbl=document.createElement("div"); lbl.className="seclabel";
+  lbl.innerHTML=`<span>${s.t}</span>`;
+  if(s.link){ lbl.classList.add("link"); lbl.innerHTML+=` &nbsp;<span class="go">open gallery ↗</span>`;
+    lbl.addEventListener("click",()=>window.open(s.link,"_blank","noopener"));
+    sec.style.cursor="pointer";
+    sec.addEventListener("click",e=>{ if(e.target.closest(".playbtn,video")) return; window.open(s.link,"_blank","noopener"); });
+  }
+  sec.appendChild(lbl);
+  main.appendChild(sec);
+  contentSecs.push({i, el:sec});
+});
+
+function playVideo(box, src, poster){
+  if(box.querySelector("video")) return;
+  const v=document.createElement("video");
+  v.src=vidSrc(src); v.controls=true; v.autoplay=true; v.playsInline=true; v.preload="none";
+  box.appendChild(v);
+  poster.style.display="none";
+  box.querySelector(".playbtn").style.display="none";
+  v.play().catch(()=>{});
+  // pause when scrolled well out of view
+  new IntersectionObserver((ents)=>{ ents.forEach(en=>{ if(!en.isIntersecting) v.pause(); }); },{threshold:0}).observe(box);
+}
+
+// reveal on scroll (content sections; intro is always visible)
+const revealIO=new IntersectionObserver((ents)=>{
+  ents.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); revealIO.unobserve(en.target); } });
+},{rootMargin:"0px 0px -12% 0px",threshold:.08});
+contentSecs.forEach(o=>revealIO.observe(o.el));
+
+const navLinks=[...document.querySelectorAll("nav a")];
+function setActiveNav(cur){
+  let active=null; NAV.forEach(n=>{ if(cur>=n.i) active=n.i; });
+  navLinks.forEach(a=>a.classList.toggle("active", +a.dataset.i===active));
+}
+function scrollToIndex(i){
+  if(i<=1){
+    const range=introEl.offsetHeight-window.innerHeight;
+    window.scrollTo({top:introEl.offsetTop+(i===1?range*0.75:0),behavior:"smooth"});
+  } else {
+    const el=document.getElementById("sec-"+(i+1)); if(el) el.scrollIntoView({behavior:"smooth"});
+  }
+}
+function currentIndex(){
+  const r=introEl.getBoundingClientRect(), range=introEl.offsetHeight-window.innerHeight;
+  if(r.bottom>window.innerHeight+2){
+    const p=range>0?Math.min(1,Math.max(0,-r.top/range)):0;
+    return p>0.5?1:0;
+  }
+  let cur=2, best=1e9, mid=window.innerHeight*0.35;
+  contentSecs.forEach(o=>{const rr=o.el.getBoundingClientRect();const d=Math.abs(rr.top-mid);if(rr.top<=mid+60&&d<best){best=d;cur=o.i;}});
+  return cur;
+}
+const ss=x=>{x=Math.min(1,Math.max(0,x));return x*x*(3-2*x);};
+function parallax(){
+  const r=introEl.getBoundingClientRect(), range=introEl.offsetHeight-window.innerHeight;
+  const p=range>0?Math.min(1,Math.max(0,-r.top/range)):0;
+  layer1.style.opacity=1-ss((p-0.15)/0.5);
+  layer1.style.transform=`translateY(${-p*9}vh)`;
+  layer2.style.opacity=ss((p-0.35)/0.5);
+  layer2.style.transform=`translateY(${(1-p)*9}vh)`;
+  ghost.style.transform=`translateY(${-52+p*12}%) scale(${1+p*0.05})`;
+}
+const hdr=document.getElementById("hdr"), prog=document.getElementById("progress");
+function onScroll(){
+  const st=window.scrollY, h=document.documentElement.scrollHeight-window.innerHeight;
+  prog.style.width=(h>0?(st/h*100):0)+"%";
+  hdr.classList.toggle("scrolled", st>30);
+  parallax();
+  setActiveNav(currentIndex());
+}
+window.addEventListener("scroll",onScroll,{passive:true});
+window.addEventListener("resize",onScroll);
+onScroll();
+
+document.getElementById("brand").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
+
+const dm=/^#s(?:ec-)?(\d+)$/.exec(location.hash);
+if(dm){ const n=+dm[1]; if(n<=2) scrollToIndex(n-1); else {const el=document.getElementById("sec-"+n); if(el) setTimeout(()=>el.scrollIntoView(),0);} }
+</script>
+</body>
+</html>
