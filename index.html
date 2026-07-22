@@ -186,34 +186,36 @@ const SLIDES = [
       <div class="hs-rule hs-rule2"></div>
     </div>
     <div class="hs-foot">PINNACLE ADVERTISING &amp; MARKETING GROUP</div>`},
-  {t:"Dealership Branding"},
-  {t:"Lakeland — Own It, Take It, In Style", videos:[{src:"video-04.mp4"}]},
-  {t:"Cadillac Lakeland — Evergreen Campaign", videos:[{src:"video-05.mp4"}]},
-  {t:"Buick Lakeland — In Style Campaign", videos:[{src:"video-06.mp4"}]},
-  {t:"Motor Works — Brand Identity", videos:[{src:"video-07.mp4"}]},
-  {t:"Motor Werks", videos:[{src:"video-08.mp4"}]},
-  {t:"Brooksville Buick GMC — Roam Free", videos:[{src:"video-09a.mp4"}]},
-  {t:"Client Testimonial — Brooksville"},
-  {t:"Brooksville Buick • GMC — There's Work to Be Done", videos:[{src:"video-11.mp4"}]},
-  {t:"Toyota of Coconut Creek — No Genie? No Problem", videos:[{src:"video-12.mp4"}]},
-  {t:"Toyota of Coconut Creek — Spot", videos:[{src:"video-13.mp4"}]},
-  {t:"Audi South Atlanta", videos:[{src:"video-14.mp4"}]},
-  {t:"Braman Miami — Details", videos:[{src:"video-15.mp4"}]},
-  {t:"Volvo of Orange Park — Chiefs", videos:[{src:"video-16.mp4"}]},
-  {t:"Retail Branding"},
-  {t:"MetroVac — Heavy U.S. Steel", videos:[{src:"video-18.mp4"}]},
-  {t:"Hassell — Blue Collar Wagyu", videos:[{src:"video-19.mp4"}]},
-  {t:"WeatherTech — CupFone"},
-  {t:"WeatherTech — Whatever Comes Your Way", videos:[{src:"video-21.mp4"}]},
-  {t:"Pitch Spot Gallery", link:"https://pinnacleadvertising.com/apps/galleries/061824/", autoplay:true, videos:[{src:"video-22.mp4"}]},
+  {t:"Dealership Branding", img:"slide-03.png"},
+  {t:"Lakeland — Own It, Take It, In Style", img:"slide-04.png", videos:[{src:"video-04.mp4"}]},
+  {t:"Cadillac Lakeland — Evergreen Campaign", img:"slide-05.png", videos:[{src:"video-05.mp4"}]},
+  {t:"Buick Lakeland — In Style Campaign", img:"slide-06.png", videos:[{src:"video-06.mp4"}]},
+  {t:"Motor Works — Brand Identity", img:"slide-07.png", videos:[{src:"video-07.mp4"}]},
+  {t:"Motor Werks", img:"slide-08.png", videos:[{src:"video-08.mp4"}]},
+  {t:"Brooksville Buick GMC — Roam Free", img:"slide-09.png", videos:[{src:"video-09a.mp4"}]},
+  {t:"Client Testimonial — Brooksville", img:"slide-10.png"},
+  {t:"Brooksville Buick • GMC — There's Work to Be Done", img:"slide-11.png", videos:[{src:"video-11.mp4"}]},
+  {t:"Toyota of Coconut Creek — No Genie? No Problem", img:"slide-12.png", videos:[{src:"video-12.mp4"}]},
+  {t:"Toyota of Coconut Creek — Spot", img:"slide-13.png", videos:[{src:"video-13.mp4"}]},
+  {t:"Berman Subaru - Brand Campaign", img:"berman-brand.png", videos:[{src:"video-berman-brand.mp4"}]},
+  {t:"Berman Subaru", img:"berman-subaru.png", videos:[{src:"video-berman-subaru.mp4"}]},
+  {t:"Berman Kia", img:"berman-kia.png", videos:[{src:"video-berman-kia.mp4"}]},
+  {t:"Audi South Atlanta", img:"slide-14.png", videos:[{src:"video-14.mp4"}]},
+  {t:"Braman Miami — Details", img:"slide-15.png", videos:[{src:"video-15.mp4"}]},
+  {t:"Volvo of Orange Park — Chiefs", img:"slide-16.png", videos:[{src:"video-16.mp4"}]},
+  {t:"Retail Branding", img:"slide-17.png"},
+  {t:"MetroVac — Heavy U.S. Steel", img:"slide-18.png", videos:[{src:"video-18.mp4"}]},
+  {t:"Hassell — Blue Collar Wagyu", img:"slide-19.png", videos:[{src:"video-19.mp4"}]},
+  {t:"WeatherTech — CupFone", img:"slide-20.png"},
+  {t:"WeatherTech — Whatever Comes Your Way", img:"slide-21.png", videos:[{src:"video-21.mp4"}]},
+  {t:"Pitch Spot Gallery", img:"slide-22.png", link:"https://pinnacleadvertising.com/apps/galleries/061824/", autoplay:true, videos:[{src:"video-22.mp4"}]},
 ];
 const NAV = [
   {label:"Automotive", i:2},
-  {label:"Retail", i:16},
-  {label:"Gallery", i:21},
+  {label:"Retail", i:19},
+  {label:"Gallery", i:24},
 ];
-const pad = n => String(n+1).padStart(2,"0");
-const slideSrc = i => `assets/slides/slide-${pad(i)}.png`;
+const imgSrc = f => `assets/slides/${f}`;
 const vidSrc = f => `assets/videos/${f}`;
 const PLAY_SVG = '<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45.5" fill="rgba(0,0,0,.32)"/><circle cx="50" cy="50" r="46.5" fill="none" stroke="#fff" stroke-width="2.5"/><path fill="currentColor" d="M40 33 L70 50 L40 67 Z"/></svg>';
 
@@ -271,20 +273,20 @@ SLIDES.forEach((s,i)=>{
     const box=document.createElement("div"); box.className="vsec";
     const v=document.createElement("video");
     v.src=vidSrc(vids[0].src); v.muted=true; v.loop=true; v.playsInline=true; v.preload="metadata";
-    v.setAttribute("poster",slideSrc(i)); v.style.pointerEvents="none";
+    v.setAttribute("poster",imgSrc(s.img)); v.style.pointerEvents="none";
     box.appendChild(v);
     sec.appendChild(box);
     new IntersectionObserver((ents)=>ents.forEach(en=>{ if(en.isIntersecting) v.play().catch(()=>{}); else v.pause(); }),{threshold:.25}).observe(box);
   } else if(vids.length){
     const box=document.createElement("div"); box.className="vsec";
-    const poster=document.createElement("img"); poster.className="poster"; poster.loading="lazy"; poster.src=slideSrc(i); poster.alt=s.t;
+    const poster=document.createElement("img"); poster.className="poster"; poster.loading="lazy"; poster.src=imgSrc(s.img); poster.alt=s.t;
     box.appendChild(poster);
     const pb=document.createElement("button"); pb.className="playbtn"; pb.setAttribute("aria-label","Play "+s.t); pb.innerHTML=PLAY_SVG;
     pb.addEventListener("click",e=>{e.stopPropagation();playVideo(box,vids[0].src,poster,s.mute);});
     box.appendChild(pb);
     sec.appendChild(box);
   } else {
-    const img=document.createElement("img"); img.className="slideimg"; img.loading="lazy"; img.src=slideSrc(i); img.alt=s.t;
+    const img=document.createElement("img"); img.className="slideimg"; img.loading="lazy"; img.src=imgSrc(s.img); img.alt=s.t;
     sec.appendChild(img);
   }
   const lbl=document.createElement("div"); lbl.className="seclabel";
