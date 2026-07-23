@@ -111,6 +111,9 @@
   .seclabel .n{color:var(--accent);font-weight:800}
   .seclabel.link{pointer-events:auto;cursor:pointer;background:linear-gradient(90deg,rgba(0,0,0,.7),transparent)}
   .seclabel .go{color:var(--accent);font-weight:800}
+  .seclabel.audionote{left:auto;right:0;max-width:60%;justify-content:flex-end;text-align:right;
+    background:linear-gradient(270deg,rgba(0,0,0,.55),transparent);color:#c9c9c9;
+    text-transform:uppercase;letter-spacing:.16em;font-size:11px}
 
   /* footer */
   footer{position:relative;width:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -188,17 +191,17 @@ const SLIDES = [
     </div>
     <div class="hs-foot">PINNACLE ADVERTISING &amp; MARKETING GROUP</div>`},
   {t:"Dealership Branding", img:"slide-03.png"},
-  {t:"Lakeland — Own It, Take It, In Style", img:"slide-04.png", videos:[{src:"video-04.mp4"}]},
+  {t:"Lakeland — Own It, Take It, In Style", img:"slide-04.png", autoplay:true, note:"No audio, visual only", videos:[{src:"video-04.mp4"}]},
   {t:"Cadillac Lakeland — Evergreen Campaign", img:"slide-05.png", videos:[{src:"video-05.mp4"}]},
   {t:"Buick Lakeland — In Style Campaign", img:"slide-06.png", videos:[{src:"video-06.mp4"}]},
-  {t:"Motor Works — Brand Identity", img:"slide-07.png", videos:[{src:"video-07.mp4"}]},
+  {t:"Motor Works — Brand Identity", img:"slide-07.png", autoplay:true, note:"No audio, visual only", videos:[{src:"video-07.mp4"}]},
   {t:"Motor Werks", img:"slide-08.png", videos:[{src:"video-08.mp4"}]},
-  {t:"Brooksville Buick GMC — Roam Free", img:"slide-09.png", videos:[{src:"video-09a.mp4"}]},
+  {t:"Brooksville Buick GMC — Roam Free", img:"slide-09.png", autoplay:true, note:"No audio, visual only", videos:[{src:"video-09a.mp4"}]},
   {t:"Client Testimonial — Brooksville", img:"slide-10.png"},
   {t:"Brooksville Buick • GMC — There's Work to Be Done", img:"slide-11.png", videos:[{src:"video-11.mp4"}]},
-  {t:"Toyota of Coconut Creek — No Genie? No Problem", img:"slide-12.png", videos:[{src:"video-12.mp4"}]},
+  {t:"Toyota of Coconut Creek — No Genie? No Problem", img:"slide-12.png", autoplay:true, note:"No audio, visual only", videos:[{src:"video-12.mp4"}]},
   {t:"Toyota of Coconut Creek — Spot", img:"slide-13.png", videos:[{src:"video-13.mp4"}]},
-  {t:"Berman Subaru - Brand Campaign", img:"berman-brand.png", videos:[{src:"video-berman-brand.mp4"}]},
+  {t:"Berman Subaru - Brand Campaign", img:"berman-brand.png", autoplay:true, note:"No audio, visual only", videos:[{src:"video-berman-brand.mp4"}]},
   {t:"Berman Subaru", img:"berman-subaru.png", videos:[{src:"video-berman-subaru.mp4"}]},
   {t:"Berman Kia", img:"berman-kia.png", videos:[{src:"video-berman-kia.mp4"}]},
   {t:"Audi South Atlanta", img:"slide-14.png", videos:[{src:"video-14.mp4"}]},
@@ -299,6 +302,7 @@ SLIDES.forEach((s,i)=>{
     sec.addEventListener("click",e=>{ if(e.target.closest(".playbtn,video")) return; window.open(s.link,"_blank","noopener"); });
   }
   sec.appendChild(lbl);
+  if(s.note){ const nn=document.createElement("div"); nn.className="seclabel audionote"; nn.innerHTML=`<span>${s.note}</span>`; sec.appendChild(nn); }
   main.appendChild(sec);
   contentSecs.push({i, el:sec});
 });
